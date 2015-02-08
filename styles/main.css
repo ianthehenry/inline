@@ -42,17 +42,21 @@ ul
 {
 	opacity:.5;
 }
- 
+
 .outline-container ul
 {
 	padding-left:20px;
 	background-repeat:no-repeat;
 }
 
+.scroll-wrapper
+{
+  padding-bottom:1px; /*Prevents premature scrollage when last item is selected*/
+}
+
 .outline-container ul.outline
 {
 	min-height:20px;
-	margin-bottom:1px; /*Prevents premature scrollage when last item is selected*/
 }
 
 /* Bullets */
