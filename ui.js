@@ -161,6 +161,8 @@ function restoreWorkspace()
 	var outlines = JSON.parse(localStorage.getItem('workspace'));
 	for(var i = 0; i < outlines.length; i++)
 		openOutline(JSON.parse(localStorage.getItem(outlines[i].id)), true).width(outlines[i].width);
+	if(outlines.length == 0)
+		openHelp();
 }
 
 function loadOptions()
@@ -697,6 +699,556 @@ function newOutline($folder)
 	rename($li);
 }
 
+function openHelp()
+{
+	openOutline({
+		'version': 1,
+		'id': 'readonly',
+		'title': 'Help',
+		'options': { 'lineNumbers': false, 'guidelines': true },
+		'lines': [
+			{
+				"text": "Hello! Welcome to Inline.",
+				"collapsed": false,
+				"open": false,
+				"class": "",
+				"children": []
+			},
+			{
+				"text": "Feel free to interact with this help document however you like -- you can always close it and press Help in the menu to get it back.",
+				"collapsed": false,
+				"open": false,
+				"class": "",
+				"children": []
+			},
+			{
+				"text": "Notes",
+				"collapsed": false,
+				"open": false,
+				"class": "",
+				"children": [
+					{
+						"text": "Google Chrome does not allow interaction with the system clipboard yet. Instead, I've simulated a simple clipboard, but it will not persist if you refresh or close the Inline window.",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": []
+					},
+					{
+						"text": "If you drag a line from one outline to another, this is recorded by the undo history as a distinct operation on each outline, so undoing one operation will not undo the other.",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": []
+					},
+					{
+						"text": "You don't need to worry about saving.",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": [
+							{
+								"text": "Outlines are automatically saved when you close them.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "All open outlines are automatically saved when you close Chrome, close the Inline tab, or navigate to a different page.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "All open outlines are automatically saved every 30 seconds.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							}
+						]
+					}
+				]
+			},
+			{
+				"text": "Making an outline",
+				"collapsed": false,
+				"open": false,
+				"class": "",
+				"children": [
+				{
+					"text": "There's a surprisingly complicated folder system in the menu on the left.",
+					"collapsed": false,
+					"open": false,
+					"class": "",
+					"children": []
+				},
+				{
+					"text": "You can make folders and drag and drop files.",
+					"collapsed": false,
+					"open": false,
+					"class": "",
+					"children": []
+				},
+				{
+					"text": "To delete an outline, drag it onto the trash can.",
+					"collapsed": false,
+					"open": false,
+					"class": "",
+					"children": []
+				},
+				{
+					"text": "You can rename files too. You'll figure it out.",
+					"collapsed": false,
+					"open": false,
+					"class": "",
+					"children": []
+				}
+				]
+			},
+			{
+				"text": "Keyboard Shortcuts",
+				"collapsed": false,
+				"open": false,
+				"class": "",
+				"children": [
+					{
+						"text": "C-key means Ctrl-key or Cmd-key, depending on your leanings.",
+						"collapsed": false,
+						"open": false,
+						"class": "note",
+						"children": []
+					},
+					{
+						"text": "Standard Operations",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": [
+							{
+								"text": "C-z: Undo.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "C-shift-z: Redo.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "C-c: Copy the selected lines.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "C-x: Cut the selected lines.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "C-v: Paste the selected lines after the focus.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "C-shift-v: Paste the selected lines before the focus.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							}
+						]
+					},
+					{
+						"text": "Navigation",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": [
+							{
+								"text": "Up/down: Select line above/below the focus.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "Right/left: Open/close the selected lines.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "Shift+right/left: Expand/collapse the selected lines.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "Shift+up/down: Union select the line above/below the focus.",
+								"collapsed": false,
+								"open": true,
+								"class": "",
+								"children": [
+									{
+										"text": "If the line above/below is already selected, this deselects the current line. This isn't a great solution when you have discontiguous selections, but it works fine otherwise.",
+										"collapsed": false,
+										"open": false,
+										"class": "note",
+										"children": []
+									}
+								]
+							},
+							{
+								"text": "C-shift-up/down: Move the focus up/down without deselecting any other lines.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "Home: Select the focused line's parent.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "C-home: Select the first line of the outline.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "You can use shift-home and shift-ctrl+home as well.",
+								"collapsed": false,
+								"open": false,
+								"class": "note",
+								"children": []
+							},
+							{
+								"text": "I haven't added the end key yet; sue me.",
+								"collapsed": false,
+								"open": false,
+								"class": "note",
+								"children": []
+							}
+						]
+					},
+					{
+						"text": "Managing Multiple Outlines",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": [
+							{
+								"text": "`: Select the next outline.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "Shift+`: Select the previous outline.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "C-shift-left: Move the current outline to the left.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "C-shift-right: Move the current outline to the right.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "You can resize outlines with the mouse!",
+								"collapsed": false,
+								"open": false,
+								"class": "note",
+								"children": []
+							}
+						]
+					},
+					{
+						"text": "Insertion/deletion",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": [
+							{
+								"text": "Enter: Insert a line after the focus.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "Shift+enter: Insert a line before the focus.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "C-enter: Append a child line to the focus.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "C-shift-enter: Prepend a child line to the focus.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "Backspace/delete: Delete the selected lines.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							}
+						]
+					},
+					{
+						"text": "Organization",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": [
+							{
+								"text": "C-up: Move the selected lines up.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "C-down: Move the selected lines down.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "Tab: indent the selected lines.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "Shift+tab: outdent the selected lines.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "Q: Indent the selected lines without their children.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "Shift+q: Outdent the selected lines' children.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "Of course, you can drag and drop entries as well. But sometimes, if you're dragging on text, weird stuff can happen. I recommend you always drag from the bullet, not from the text.",
+								"collapsed": false,
+								"open": false,
+								"class": "note",
+								"children": []
+							},
+							{
+								"text": "You can drop entries on a bullet to create a sub-line.",
+								"collapsed": false,
+								"open": false,
+								"class": "note",
+								"children": []
+							}
+						]
+					},
+					{
+						"text": "Editing",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": [
+							{
+								"text": "F2: toggle edit mode.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "Escape: exit edit mode.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "E: enter edit mode.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "Up: (when caret is at the start of the line): Exit edit mode and select the line above.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "Down: (when caret is at the end of the line): Exit edit mode and select the line below.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							}
+						]
+					},
+					{
+						"text": "Bullet Classes",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": [
+							{
+								"text": "Z: Toggle Important class.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "X: Toggle Done class.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "C: Cycle color classes.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							},
+							{
+								"text": "N: Toggle Note class.",
+								"collapsed": false,
+								"open": false,
+								"class": "",
+								"children": []
+							}
+						]
+					},
+					{
+						"text": "HJKL keys can be used instead of arrow keys for all operations.",
+						"collapsed": false,
+						"open": false,
+						"class": "note",
+						"children": []
+					}
+				]
+			},
+			{
+				"text": "Known Bugs",
+				"collapsed": false,
+				"open": false,
+				"class": "",
+				"children": [
+					{
+						"text": "Dragging text while editing a line causes a few problems. Don't do it.",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": []
+					},
+					{
+						"text": "Pressing backspace/delete really fast can cause no selection when animations are enabled.",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": []
+					},
+					{
+						"text": "Insert/move icons render underneath (z-index-wise) line numbers",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": []
+					},
+					{
+						"text": "Pasting text while editing does not work very well.",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": []
+					},
+					{
+						"text": "You can't deselect the line with focus using ctrl+click.",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": []
+					},
+					{
+						"text": "If you start dragging a folder, but end the drag operation on the folder itself, the click event is fired. Same for outlines.",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": []
+					},
+					{
+						"text": "When dragging to resize, if your mouse stops over the margin on the outline to the right, the resizing breaks until your cursor leaves it.",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": []
+					}
+				]
+			}
+		]
+	});
+}
+
 function newFolder($folder)
 {
 	var $newFolder = $('\
@@ -808,552 +1360,7 @@ function initDrawer()
 		if($('#readonly.outline-container').focus().length > 0)
 			return;
 
-		openOutline({
-			'version': 1,
-			'id': 'readonly',
-			'title': 'Help',
-			'options': { 'lineNumbers': false, 'guidelines': true },
-			'lines': [
-				{
-					"text": "Hello! Welcome to Inline.",
-					"collapsed": false,
-					"open": false,
-					"class": "",
-					"children": []
-				},
-				{
-					"text": "Feel free to interact with this help document however you like -- you can always close it and press Help in the menu to get it back.",
-					"collapsed": false,
-					"open": false,
-					"class": "",
-					"children": []
-				},
-				{
-					"text": "Notes",
-					"collapsed": false,
-					"open": false,
-					"class": "",
-					"children": [
-						{
-							"text": "Google Chrome does not allow interaction with the system clipboard yet. Instead, I've simulated a simple clipboard, but it will not persist if you refresh or close the Inline window.",
-							"collapsed": false,
-							"open": false,
-							"class": "",
-							"children": []
-						},
-						{
-							"text": "If you drag a line from one outline to another, this is recorded by the undo history as a distinct operation on each outline, so undoing one operation will not undo the other.",
-							"collapsed": false,
-							"open": false,
-							"class": "",
-							"children": []
-						},
-						{
-							"text": "You don't need to worry about saving.",
-							"collapsed": false,
-							"open": false,
-							"class": "",
-							"children": [
-								{
-									"text": "Outlines are automatically saved when you close them.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "All open outlines are automatically saved when you close Chrome, close the Inline tab, or navigate to a different page.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "All open outlines are automatically saved every 30 seconds.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								}
-							]
-						}
-					]
-				},
-				{
-					"text": "Making an outline",
-					"collapsed": false,
-					"open": false,
-					"class": "",
-					"children": [
-					{
-						"text": "There's a surprisingly complicated folder system in the menu on the left.",
-						"collapsed": false,
-						"open": false,
-						"class": "",
-						"children": []
-					},
-					{
-						"text": "You can make folders and drag and drop files.",
-						"collapsed": false,
-						"open": false,
-						"class": "",
-						"children": []
-					},
-					{
-						"text": "To delete an outline, drag it onto the trash can.",
-						"collapsed": false,
-						"open": false,
-						"class": "",
-						"children": []
-					},
-					{
-						"text": "You can rename files too. You'll figure it out.",
-						"collapsed": false,
-						"open": false,
-						"class": "",
-						"children": []
-					}
-					]
-				},
-				{
-					"text": "Keyboard Shortcuts",
-					"collapsed": false,
-					"open": false,
-					"class": "",
-					"children": [
-						{
-							"text": "C-key means Ctrl-key or Cmd-key, depending on your leanings.",
-							"collapsed": false,
-							"open": false,
-							"class": "note",
-							"children": []
-						},
-						{
-							"text": "Standard Operations",
-							"collapsed": false,
-							"open": false,
-							"class": "",
-							"children": [
-								{
-									"text": "C-z: Undo.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "C-shift-z: Redo.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "C-c: Copy the selected lines.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "C-x: Cut the selected lines.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "C-v: Paste the selected lines after the focus.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "C-shift-v: Paste the selected lines before the focus.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								}
-							]
-						},
-						{
-							"text": "Navigation",
-							"collapsed": false,
-							"open": false,
-							"class": "",
-							"children": [
-								{
-									"text": "Up/down: Select line above/below the focus.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "Right/left: Open/close the selected lines.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "Shift+right/left: Expand/collapse the selected lines.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "Shift+up/down: Union select the line above/below the focus.",
-									"collapsed": false,
-									"open": true,
-									"class": "",
-									"children": [
-										{
-											"text": "If the line above/below is already selected, this deselects the current line. This isn't a great solution when you have discontiguous selections, but it works fine otherwise.",
-											"collapsed": false,
-											"open": false,
-											"class": "note",
-											"children": []
-										}
-									]
-								},
-								{
-									"text": "C-shift-up/down: Move the focus up/down without deselecting any other lines.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "Home: Select the focused line's parent.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "C-home: Select the first line of the outline.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "You can use shift-home and shift-ctrl+home as well.",
-									"collapsed": false,
-									"open": false,
-									"class": "note",
-									"children": []
-								},
-								{
-									"text": "I haven't added the end key yet; sue me.",
-									"collapsed": false,
-									"open": false,
-									"class": "note",
-									"children": []
-								}
-							]
-						},
-						{
-							"text": "Managing Multiple Outlines",
-							"collapsed": false,
-							"open": false,
-							"class": "",
-							"children": [
-								{
-									"text": "`: Select the next outline.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "Shift+`: Select the previous outline.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "C-shift-left: Move the current outline to the left.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "C-shift-right: Move the current outline to the right.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "You can resize outlines with the mouse!",
-									"collapsed": false,
-									"open": false,
-									"class": "note",
-									"children": []
-								}
-							]
-						},
-						{
-							"text": "Insertion/deletion",
-							"collapsed": false,
-							"open": false,
-							"class": "",
-							"children": [
-								{
-									"text": "Enter: Insert a line after the focus.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "Shift+enter: Insert a line before the focus.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "C-enter: Append a child line to the focus.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "C-shift-enter: Prepend a child line to the focus.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "Backspace/delete: Delete the selected lines.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								}
-							]
-						},
-						{
-							"text": "Organization",
-							"collapsed": false,
-							"open": false,
-							"class": "",
-							"children": [
-								{
-									"text": "C-up: Move the selected lines up.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "C-down: Move the selected lines down.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "Tab: indent the selected lines.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "Shift+tab: outdent the selected lines.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "Q: Indent the selected lines without their children.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "Shift+q: Outdent the selected lines' children.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "Of course, you can drag and drop entries as well. But sometimes, if you're dragging on text, weird stuff can happen. I recommend you always drag from the bullet, not from the text.",
-									"collapsed": false,
-									"open": false,
-									"class": "note",
-									"children": []
-								},
-								{
-									"text": "You can drop entries on a bullet to create a sub-line.",
-									"collapsed": false,
-									"open": false,
-									"class": "note",
-									"children": []
-								}
-							]
-						},
-						{
-							"text": "Editing",
-							"collapsed": false,
-							"open": false,
-							"class": "",
-							"children": [
-								{
-									"text": "F2: toggle edit mode.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "Escape: exit edit mode.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "E: enter edit mode.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "Up: (when caret is at the start of the line): Exit edit mode and select the line above.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "Down: (when caret is at the end of the line): Exit edit mode and select the line below.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								}
-							]
-						},
-						{
-							"text": "Bullet Classes",
-							"collapsed": false,
-							"open": false,
-							"class": "",
-							"children": [
-								{
-									"text": "Z: Toggle Important class.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "X: Toggle Done class.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "C: Cycle color classes.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								},
-								{
-									"text": "N: Toggle Note class.",
-									"collapsed": false,
-									"open": false,
-									"class": "",
-									"children": []
-								}
-							]
-						},
-						{
-							"text": "HJKL keys can be used instead of arrow keys for all operations.",
-							"collapsed": false,
-							"open": false,
-							"class": "note",
-							"children": []
-						}
-					]
-				},
-				{
-					"text": "Known Bugs",
-					"collapsed": false,
-					"open": false,
-					"class": "",
-					"children": [
-						{
-							"text": "Dragging text while editing a line causes a few problems. Don't do it.",
-							"collapsed": false,
-							"open": false,
-							"class": "",
-							"children": []
-						},
-						{
-							"text": "Pressing backspace/delete really fast can cause no selection when animations are enabled.",
-							"collapsed": false,
-							"open": false,
-							"class": "",
-							"children": []
-						},
-						{
-							"text": "Insert/move icons render underneath (z-index-wise) line numbers",
-							"collapsed": false,
-							"open": false,
-							"class": "",
-							"children": []
-						},
-						{
-							"text": "Pasting text while editing does not work very well.",
-							"collapsed": false,
-							"open": false,
-							"class": "",
-							"children": []
-						},
-						{
-							"text": "You can't deselect the line with focus using ctrl+click.",
-							"collapsed": false,
-							"open": false,
-							"class": "",
-							"children": []
-						},
-						{
-							"text": "If you start dragging a folder, but end the drag operation on the folder itself, the click event is fired. Same for outlines.",
-							"collapsed": false,
-							"open": false,
-							"class": "",
-							"children": []
-						},
-						{
-							"text": "When dragging to resize, if your mouse stops over the margin on the outline to the right, the resizing breaks until your cursor leaves it.",
-							"collapsed": false,
-							"open": false,
-							"class": "",
-							"children": []
-						}
-					]
-				}
-			]
-		});
+		openHelp();
 	});
 
 	$('#document-list > .options').live('click', function(e)
