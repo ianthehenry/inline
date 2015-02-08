@@ -1393,7 +1393,7 @@ function initKeyboard()
 					unionSelect(getVisuallyAbove($focus), 'deselect current');
 					break;
 				case keys.down:
-				//case keys.j:
+				case keys.j:
 					unionSelect(getVisuallyBelow($focus), 'deselect current');
 					break;
 				case keys.home:
@@ -1462,8 +1462,13 @@ function initKeyboard()
 					insertLine($focus.children('ul'), -1);
 					break;
 				case keys.down:
-				case keys.j:
 					moveSelectionDown();
+					break;
+				case keys.j:
+					if(e.altKey)
+						return;
+					else
+						moveSelectionDown();
 					break;
 				case keys.up:
 				case keys.k:
