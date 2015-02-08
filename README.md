@@ -14,16 +14,16 @@ You can see a live demo at [ianthehenry.com/inline](https://ianthehenry.com/inli
 - You can open multiple outlines, and drag and drop lines between them
 - You can resize outlines
 - Multi-line outlines, which can be collapsed
-- Local persistence
-- Very good drag and drop that works correctly between hierarchy levels
-- Multiple, selection, including non-contiguous selections
+- Local storage persistence
+- Drag and drop that works correctly between hierarchy levels
+- Multiple selection, including non-contiguous selections
 - Modal, keyboard-based interface
 - Different entry types, such as notes and checkboxes
 - Surprisingly non-broken animations
 
 # Historical Context
 
-This is a thing that I worked on in January and February of 2011.
+This is a thing that I started in December 2010 and worked on until February of 2011.
 
 Apparently, in 2010, I wasn't using source control for my personal projects. I was young and foolish.
 
