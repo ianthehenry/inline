@@ -1469,14 +1469,6 @@ function initKeyboard()
 				case keys.k:
 					moveSelectionUp();
 					break;
-				case keys.left:
-				case keys.h:
-					alert("doesn't do anyhing yet");
-					break;
-				case keys.right:
-				case keys.l:
-					alert("doesn't do anyhing yet");
-					break;
 				case keys.home:
 					select($focus.closest('.outline').children(':first'));
 					break;
