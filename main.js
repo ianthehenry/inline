@@ -1587,7 +1587,7 @@ function initFirstStart()
 		localStorage.setItem('workspace', '[]');
 
 	if(localStorage.getItem('options') == undefined)
-		localStorage.setItem('options', '{"animationSpeed":0,"enterKeyExitsEditMode":true}');
+		localStorage.setItem('options', '{"animationSpeed":100,"enterKeyExitsEditMode":true}');
 
 	if(localStorage.getItem('outlines') == undefined)
 		localStorage.setItem('outlines', '[]');
