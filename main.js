@@ -1565,6 +1565,9 @@ function initKeyboard()
 				case keys.x:
 					cycleSelectionBulletClass(['todo', 'done']);
 					break;
+				case keys.c:
+					cycleSelectionBulletClass(['red', 'yellow', 'green']);
+					break;
 				default:
 					console.log(e.which)
 					return;

@@ -34,6 +34,33 @@ var bulletClasses = {
 		'icon': 'bullet/bullet_star',
 		'shape': 'round',
 		'character': '*'
+	},
+	'red': {
+		'bold': false,
+		'italic': false,
+		'color': '',
+		'decoration': 'none',
+		'icon': 'bullet/bullet_red',
+		'shape': 'round',
+		'character': 'r'
+	},
+	'green': {
+		'bold': false,
+		'italic': false,
+		'color': '',
+		'decoration': 'none',
+		'icon': 'bullet/bullet_green',
+		'shape': 'round',
+		'character': 'r'
+	},
+	'yellow': {
+		'bold': false,
+		'italic': false,
+		'color': '',
+		'decoration': 'none',
+		'icon': 'bullet/bullet_yellow',
+		'shape': 'round',
+		'character': 'r'
 	}
 };
 
