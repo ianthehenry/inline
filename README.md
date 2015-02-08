@@ -6,7 +6,7 @@ It worked surprisingly well at the time, considering how little I knew about pro
 
 I don't recommend that you use it. I rather like a lot of the design, such as the "bullet classes" and the way the gutter works, but I can't guarantee that it's stable enough to trust with any important data.
 
-I'll put a live demo up soon. In the meantime, cloning the repo and opening `index.html` will get you where you want to be.
+You can see a live demo at [ianthehenry.com/inline](https://ianthehenry.com/inline), or you can clone the repo and open `index.html`.
 
 # Features
 
@@ -20,7 +20,6 @@ I'll put a live demo up soon. In the meantime, cloning the repo and opening `ind
 - Modal, keyboard-based interface
 - Different entry types, such as notes and checkboxes
 - Surprisingly non-broken animations
-- LCARs mode
 
 # Historical Context
 
