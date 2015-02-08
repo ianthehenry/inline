@@ -815,7 +815,14 @@ function initDrawer()
 			'options': { 'lineNumbers': false, 'guidelines': true },
 			'lines': [
 				{
-					"text": "This is a fully interactive help document. Feel free to make any changes you want; they won't be saved so you can always get back to the original if you screw stuff up.",
+					"text": "Hello! Welcome to Inline.",
+					"collapsed": false,
+					"open": false,
+					"class": "",
+					"children": []
+				},
+				{
+					"text": "Feel free to interact with this help document however you like -- you can always close it and press Help in the menu to get it back.",
 					"collapsed": false,
 					"open": false,
 					"class": "",
@@ -869,14 +876,43 @@ function initDrawer()
 									"children": []
 								}
 							]
-						},
-						{
-							"text": "Outlines are artificially limited to 600 pixels high. This will change to fit the height of the window soon.",
-							"collapsed": false,
-							"open": false,
-							"class": "",
-							"children": []
 						}
+					]
+				},
+				{
+					"text": "Making an outline",
+					"collapsed": false,
+					"open": false,
+					"class": "",
+					"children": [
+					{
+						"text": "There's a surprisingly complicated folder system in the menu on the left.",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": []
+					},
+					{
+						"text": "You can make folders and drag and drop files.",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": []
+					},
+					{
+						"text": "To delete an outline, drag it onto the trash can.",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": []
+					},
+					{
+						"text": "You can rename files too. You'll figure it out.",
+						"collapsed": false,
+						"open": false,
+						"class": "",
+						"children": []
+					}
 					]
 				},
 				{
@@ -1054,6 +1090,13 @@ function initDrawer()
 									"open": false,
 									"class": "",
 									"children": []
+								},
+								{
+									"text": "You can resize outlines with the mouse!",
+									"collapsed": false,
+									"open": false,
+									"class": "note",
+									"children": []
 								}
 							]
 						},
@@ -1146,6 +1189,20 @@ function initDrawer()
 									"collapsed": false,
 									"open": false,
 									"class": "",
+									"children": []
+								},
+								{
+									"text": "Of course, you can drag and drop entries as well. But sometimes, if you're dragging on text, weird stuff can happen. I recommend you always drag from the bullet, not from the text.",
+									"collapsed": false,
+									"open": false,
+									"class": "note",
+									"children": []
+								},
+								{
+									"text": "You can drop entries on a bullet to create a sub-line.",
+									"collapsed": false,
+									"open": false,
+									"class": "note",
 									"children": []
 								}
 							]
