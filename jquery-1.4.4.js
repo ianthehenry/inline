@@ -6555,16 +6555,6 @@ jQuery.each({
 	};
 });
 
-// Some custom shortcuts for Inline
-jQuery.each({
-	slideDown2: genFx("show", 1),
-	slideUp2: genFx("hide", 1),
-}, function( name, props ) {
-	jQuery.fn[ name ] = function( options ) {
-		return this.animate( props, options );
-	};
-});
-
 jQuery.extend({
 	speed: function( speed, easing, fn ) {
 		var opt = speed && typeof speed === "object" ? jQuery.extend({}, speed) : {

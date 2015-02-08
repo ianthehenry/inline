@@ -55,6 +55,26 @@ $.fn.contains = function(element)
 	return false;
 }
 
+function genFx(type)
+{
+	var obj = {};
+	$.each(["height", "marginTop", "marginBottom", "paddingTop", "paddingBottom"], function()
+	{
+		obj[this] = type
+	});
+	return obj;
+}
+
+// Some custom shortcuts for Inline
+$.each({
+	slideDown2: genFx("show"),
+	slideUp2: genFx("hide"),
+}, function(name, props) {
+	$.fn[name] = function(options) {
+		return this.animate(props, options);
+	};
+});
+
 /* History Stuff */
 
 function getAbsoluteLocation($li)
