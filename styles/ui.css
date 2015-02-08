@@ -172,7 +172,6 @@ body
 #document-list .folder.trash.open > .line { background-image:url('icons/open trash.png'); }
 #document-list .help > .line { background-image:url('icons/help.png'); }
 #document-list .options > .line { background-image:url('icons/options.png'); }
-#document-list .donate > .line { background-image:url('icons/donate.png'); }
 #document-list .folder.open > .line { background-image:url('icons/open folder.png'); }
 #document-list .folder.root > .line { background-image:url('icons/round closed.png'); }
 #document-list .folder.open.root > .line { background-image:url('icons/round open.png'); }
