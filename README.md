@@ -31,7 +31,7 @@ This is the first thing that I ever made in JavaScript. I had a tiny amount of J
 
 The code is a *nightmare*. Practically everything is crammed into a single `main.js` file. The DOM is the authoritative model layer (really). I didn't know anything about correctly structuring large JavaScript applications at the time. I promise I know better now.
 
-The only positive thing I'll say about the code is that all mutations are represented as a simple reversible description, so everything goes through the same system and outline-level undo works perfectly. (Text-level undo, unforunately, [has some problems](http://stackoverflow.com/questions/5086693)).
+The only positive thing I'll say about the code is that all mutations are represented as a simple reversible description, so everything goes through the same system and outline-level undo works perfectly. (Text-level undo, unfortunately, [has some problems](http://stackoverflow.com/questions/5086693)).
 
 Inline was developed as a "Chrome App," and was developed when Chrome Apps had just come out. I was enamored by the ability to write cross-platform interactive apps so easily, and developed a few of these around the same time. It may not work in non-Chrome browsers at all.
 
