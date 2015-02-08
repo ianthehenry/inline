@@ -4,11 +4,11 @@
 		<title>Inline Options</title>
 		<link href="styles/global.css" rel="stylesheet" type="text/css" />
 		<link href="styles/options.css" rel="stylesheet" type="text/css" />
-		<script src="jquery-1.4.4.min.js" type="text/javascript"></script>
+		<script src="jquery-1.4.4.js" type="text/javascript"></script>
 		<script type="text/javascript">
 
 			$(init);
-			
+
 			function init()
 			{
 				var options =
@@ -16,15 +16,15 @@
 					'animationSpeed': 0,
 					'enterKeyExitsEditMode': true
 				};
-				
+
 				if(localStorage.getItem('options') != undefined)
 					options = JSON.parse(localStorage.getItem('options'));
-				
+
 				$('#animation-speed-select > option[value=' + options.animationSpeed.toString() + ']').attr('selected', 'selected');
-				
+
 				if(options.enterKeyExitsEditMode)
 					$('#enter-exits-edit-mode-checkbox').attr('checked', 'checked');
-			
+
 				$('#save-button').click(function()
 				{
 					localStorage.setItem('options', JSON.stringify(
@@ -35,15 +35,15 @@
 					));
 				});
 			}
-		
+
 		</script>
 	</head>
 	<body>
-	
+
 		<div class="title">
 		<h1><span class="bullet"><span>•</span></span>Inline</h1>
 		</div>
-		<div class="options">Animation speed: <select id="animation-speed-select">		
+		<div class="options">Animation speed: <select id="animation-speed-select">
 		<option value="300">Slow</option>
 		<option value="200">Normal</option>
 		<option value="100">Fast</option>
