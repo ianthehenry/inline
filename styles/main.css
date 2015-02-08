@@ -1,0 +1,284 @@
+/* Global Stuff */
+
+html
+{
+	height:100%;
+}
+
+body
+{
+	height:100%;
+	font-size:12px;
+	font-family:Helvetica, Arial, Sans-Serif;
+	margin: 0;
+	line-height:20px;
+	-webkit-user-select:none;
+}
+
+*
+{
+    margin:0;
+    padding:0;
+}
+
+ul
+{
+    list-style:none;
+}
+
+/* Layout */
+
+.outline
+{
+	display:block;
+}
+
+.outline-container li
+{
+	cursor:default;
+}
+
+.outline-container:not(:focus):not(.editing):not(.clipboarding)
+{
+	opacity:.5;
+}
+ 
+.outline-container ul
+{
+	padding-left:20px;
+	background-repeat:no-repeat;
+}
+
+.outline-container ul.outline
+{
+	min-height:20px;
+	margin-bottom:1px; /*Prevents premature scrollage when last item is selected*/
+}
+
+/* Bullets */
+
+.outline-container span.bullet
+{
+	cursor:pointer;
+	width:20px;
+	height:20px;
+	display:inline-block;
+	vertical-align:top;
+	margin-left:-5px; /* This offsets the 5px padding-left on .line, which pads the text when it's multiline*/
+	margin-right:2px;
+	float:left; /* fixes a bug where pressing the home key on the first line does nothing. Not visually necessary */
+}
+
+.outline-container span.bullet > span
+{
+	display:inline-block;
+	width:20px;
+	height:20px;
+	background-repeat:no-repeat;
+}
+
+/* Lines and Selection */
+
+.outline-container span.line
+{
+	display:block;
+	overflow:hidden;
+	white-space:pre-wrap;
+	padding-left:5px;
+}
+
+.outline-container li.collapsed > span.line
+{
+	white-space:pre;
+	max-height:20px;
+}
+
+.outline-container li.focus
+{
+	border-style:solid;
+	border-width:1px;
+	border-right:none;
+	margin:-1px 0 -1px -1px;
+	position:relative;
+	z-index:2;
+}
+
+.outline-container li.selected > span.line.editing
+{
+	border-style:solid;
+	border-width:1px;
+	border-right:none;
+	margin:-1px 0 -1px -1px;
+	position:relative;
+	z-index:2;
+	cursor:text;
+}
+
+.outline-container li.focus > span.line
+{
+	border-style:solid;
+	border-width:1px;
+	border-right:none;
+	margin:-1px 0 -1px -1px;
+	position:relative;
+	z-index:2;
+}
+
+/* Text */
+
+.outline-container li:not(.collapsed) > span.line > span.text
+{
+	word-wrap:break-word;
+}
+
+.outline-container li.focus > span.line > span.text.empty
+{
+	min-width:20px;
+	display:inline-block;
+}
+
+.outline-container li.focus > span.line > span.text
+{
+	cursor:text;
+	-webkit-user-select:text;
+	outline:none;
+}
+
+.outline-container li.focus > span.line > span.text *
+{
+	display:none;
+}
+
+.outline-container li.focus.collapsed > span.line > span.text[contenteditable]
+{
+	word-wrap:normal !important;
+}
+
+.outline-container ul.moving li.selected > span.line > span.text
+{
+	cursor:move;
+}
+
+/* Dragging */
+
+.outline-container li.dragging
+{
+	opacity:.5;
+}
+
+.outline-container li.dragging > span.line:hover
+{
+	background-color:transparent;
+}
+
+/* Inserting */
+
+.outline-container ul.inserting
+{
+	cursor:pointer;
+}
+
+/* Moving */
+
+.outline-container ul.moving.child-dropping
+{
+	background-image:none !important;
+}
+
+.outline-container ul.moving
+{
+	cursor:move;
+}
+
+.outline-container ul.moving  li
+{
+	cursor:move;
+}
+
+.outline-container ul.moving span.bullet
+{
+	cursor:move;
+}
+
+.outline-container ul.moving span.bullet.droppable
+{
+	cursor:default;
+}
+
+/* Ellipsis */
+
+.outline-container li.collapsed > span.line > span.collapsed-fadeout
+{
+	display:inline-block;
+}
+
+.outline-container span.ellipsis
+{
+	background-repeat:no-repeat;
+	background-position:right center;
+	display:inline-block;
+	height:100%;
+	width:100%;
+}
+
+.outline-container span.collapsed-fadeout
+{
+	width:60px;
+	height:20px;
+	float:right;
+	display:none;
+	position:relative;/*this makes it render above the element it's floated to the right of*/
+}
+
+/* Line Numbers */
+
+.outline-container.line-numbers span.line-number
+{
+	font-size:8px;
+	content: counter(index);
+	float:left;
+	text-align:right;
+	direction:rtl;
+	width:0;
+	cursor:pointer;
+	left:-2px;
+	position:relative;
+	opacity:.75;
+}
+
+.outline-container.line-numbers span.line-number:before
+{
+	content: counter(index);
+}
+
+.outline-container.line-numbers li
+{
+	counter-increment:index;
+}
+
+.outline-container.line-numbers ul
+{
+	counter-reset:index;
+}
+
+/* Guidelines */
+
+.outline-container.guidelines li > ul
+{
+	border-left-width:1px;
+	border-left-style:solid;
+	margin-left:-1px;
+}
+
+.outline-container li.focus > ul
+{
+	border-left:none;
+	margin-left:0;
+}
+
+#clipboard
+{
+	position:absolute;
+	left:-500px;
+	width:100px;
+}

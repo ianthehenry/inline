@@ -1,0 +1,318 @@
+body
+{
+	white-space:nowrap;
+}
+
+/* Toolbar */
+
+.outline-container > .toolbar
+{
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+	overflow:hidden;
+}
+
+.outline-container > .toolbar > .icon
+{
+	width:20px;
+	height:20px;
+	display:inline-block;
+	cursor:pointer;
+	vertical-align:top;
+}
+
+.outline-container > .toolbar > .title
+{
+	cursor:default;
+}
+
+.outline-container > .toolbar > .icon.off
+{
+	opacity:.25;
+}
+
+.outline-container > .toolbar > .spacer
+{
+	width:5px;
+	height:20px;
+	background-image:url('icons/spacer.png');
+	display:inline-block;
+	cursor:default;
+	vertical-align:top;
+	overflow:hidden;
+}
+
+.outline-container > .toolbar > .title-clipper
+{
+	width:20px;
+	height:20px;
+	display:inline-block;
+	cursor:default;
+	vertical-align:top;
+	float:right;
+	position:relative;
+}
+
+.outline-container > .toolbar > .icon.close { background-image:url('icons/close.png'); }
+.outline-container > .toolbar > .icon.save { background-image:url('icons/save.png'); }
+.outline-container > .toolbar > .icon.line-numbers { background-image:url('icons/line numbers.png'); }
+.outline-container > .toolbar > .icon.guidelines { background-image:url('icons/guidelines.png'); }
+.outline-container > .toolbar > .icon.search { background-image:url('icons/search.png'); }
+.outline-container > .toolbar > .icon.export-ion { background-image:url('icons/export ion.png'); }
+.outline-container > .toolbar > .icon.export-html { background-image:url('icons/export html.png'); }
+
+.outline-container > .toolbar > .icon.move-left, .outline-container > .toolbar > .icon.move-right
+{
+	position:relative;
+}
+
+.outline-container > .toolbar > .icon.move-right { background-image:url('icons/move right.png'); float:right; padding-right:5px; background-repeat:no-repeat; }
+.outline-container > .toolbar > .icon.move-left { background-image:url('icons/move left.png'); float:right; }
+
+.outline-container > .resize-handle, #drawer > .resize-handle
+{
+	cursor:e-resize;
+	height:100%;
+	right:-5px;
+	top:0px;
+	width:7px;
+	display:block;
+	position:absolute;
+	z-index:1;
+}
+
+#drawer > .resize-handle
+{
+	width:10px;
+}
+
+/* Dragging */
+
+/*.outline-container.dragging
+{
+	opacity:.5;
+}
+*/
+
+/* End */
+
+.outline-container.loading
+{
+	min-width:0;
+	overflow:hidden;
+}
+
+.outline-container.loading li
+{
+	min-width:0;
+}
+
+.outline-container li
+{
+	min-width:82px; /*20 for bullet, 2 for spacing between bullet and text, and 60 for fadeout/ellipsis. might need 2 more for tag margin when enabled. */
+}
+
+.outline-container, #drawer
+{
+	position:relative;
+	margin:10px 5px 0 5px;
+	width:400px;
+	min-width:300px;
+	border-radius:2px;
+	display:inline-block;
+	vertical-align:top;
+	outline:none;
+	border-style:solid;
+	border-width:1px;
+}
+
+.outline-container > .scroll-wrapper
+{
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+
+.outline-container:focus, .outline-container.editing, .outline-container.clipboarding
+{
+	border-style:solid;
+	border-width:2px;
+	margin:9px 4px -1px 4px;
+}
+
+#drawer
+{
+	border-radius:0 2px 2px 0;
+	width:200px;
+	min-width:5px;
+	margin-left:0;
+	border-left:none;
+	opacity:.5;
+}
+
+#drawer:hover
+{
+	opacity:1;
+}
+
+#drawer-container
+{
+	padding-left:5px;
+	overflow:hidden;
+}
+
+/* Document List */
+
+#document-list .folder:not(.editing), #document-list .outline:not(.editing)
+{
+	min-width:100px;
+}
+
+#document-list .folder > .line { background-image:url('icons/folder.png'); }
+#document-list .folder.trash > .line { background-image:url('icons/trash.png'); }
+#document-list .folder.trash.open > .line { background-image:url('icons/open trash.png'); }
+#document-list .help > .line { background-image:url('icons/help.png'); }
+#document-list .options > .line { background-image:url('icons/options.png'); }
+#document-list .donate > .line { background-image:url('icons/donate.png'); }
+#document-list .folder.open > .line { background-image:url('icons/open folder.png'); }
+#document-list .folder.root > .line { background-image:url('icons/round closed.png'); }
+#document-list .folder.open.root > .line { background-image:url('icons/round open.png'); }
+#document-list .outline > .line { background-image:url('icons/outline.png'); }
+#document-list .outline.open > .line { background-image:url('icons/open outline.png'); }
+
+#document-list * > .line
+{
+	padding-left:22px;
+	background-repeat:no-repeat;
+	border-radius:10px 0 0 10px;
+	display:block;
+	cursor:pointer;
+}
+
+#document-list * > .line > .buttons > *
+{
+	display:inline-block;
+	width:20px;
+	height:20px;
+	vertical-align:top;
+}
+
+#document-list * > .line > .buttons
+{
+	float:right;
+	padding-left:20px;
+	position:relative;
+	display:none;
+	vertical-align:top;
+}
+
+#document-list .edit-title
+{
+	-webkit-box-sizing:border-box;
+	width:100%;
+	border:solid 1px #ccc;
+	border-right:none;
+}
+
+#document-list .folder > .line > .buttons > .new-outline { background-image:url('icons/new outline.png'); }
+#document-list .folder > .line > .buttons > .new-folder { background-image:url('icons/new folder.png'); }
+#document-list li > .line > .buttons > .rename { background-image:url('icons/rename.png'); }
+#document-list .trash > .line > .buttons > .empty { background-image:url('icons/empty trash.png'); }
+
+#document-list li:not(.editing):not(.dragging) > .line:hover, #document-list li > .line.hover
+{
+	border-style:solid;
+	border-width:1px;
+	border-right:none;
+	margin:-1px 0 -1px -1px;
+	position:relative;
+}
+
+#document-list li > .line.hover
+{
+	cursor:move;
+}
+
+#document-list li:not(.editing):not(.dragging) > .line:hover > .buttons
+{
+	display:block;
+}
+
+#document-list > .trash li > .line:hover > .buttons
+{
+	display:none !important;
+}
+
+#document-list .folder > ul
+{
+	background-repeat:no-repeat;
+	padding-left:20px;
+}
+
+#document-list li li > ul
+{
+	border-top-left-radius:10px 10px;
+	border-bottom-left-radius:10px 10px;
+	border-left:solid 1px #ccc;
+	margin-left:-1px;
+}
+
+#document-list li.dragging
+{
+	opacity:.5;
+}
+
+#document-list ul.moving
+{
+	background-image:url('icons/move.png');
+	cursor:move;
+}
+
+#document-list ul.moving *
+{
+	cursor:move !important;
+}
+
+#document-list ul.moving.top { background-image:url('icons/move top.png'); }
+#document-list ul.moving.bottom { background-image:url('icons/move bottom.png'); }
+
+.history
+{
+	display:none; /*debug only*/
+	white-space:normal;
+	position:absolute;
+	right:0;
+	width:400px;
+	height:200px;
+	overflow-x:hidden;
+	overflow-y:auto;
+	padding:5px;
+	border:solid 1px #ccc;
+	border-right:none;
+	background-color:#fff;
+}
+
+#undo-history
+{
+	top:10px;
+}
+
+#redo-history
+{
+	top:225px;
+}
+
+.history .command
+{
+	border:solid 1px #ccc;
+}
+
+.history .command+.command
+{
+	margin-top:5px;
+}
+
+.history .action
+{
+	font-size:10px;
+	line-height:12px;
+}

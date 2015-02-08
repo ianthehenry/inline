@@ -1,0 +1,59 @@
+html
+{
+	height:100%;
+}
+
+body
+{
+	height:100%;
+    background-color: #eee;
+    font-size: 12px;
+    font-family: Verdana, Helvetica, Sans-Serif;
+    margin: 0;
+	line-height:20px;
+}
+
+a:link
+{
+    color: #034af3;
+    text-decoration:none;
+}
+a:visited
+{
+    color: #034af3;
+}
+a:hover
+{
+    color: #034af3;
+    text-decoration: underline;
+}
+a:active
+{
+    color: #eb1287;
+}
+
+*
+{
+    margin:0;
+    padding:0;
+}
+
+p+p
+{
+	margin-top:.5em;
+}
+
+fieldset
+{
+	border:solid 1px #ccc;
+}
+
+legend
+{
+	padding:0 2px 0 2px;
+}
+
+ul
+{
+    list-style:none;
+}

@@ -1,0 +1,10 @@
+<script>
+	chrome.omnibox.onInputChanged.addListener(function()
+	{
+		chrome.omnibox.setDefaultSuggestion({'description': "asdfn"});
+	});
+	
+	chrome.omnibox.onInputStarted.addListener(function() {
+		chrome.omnibox.setDefaultSuggestion({'description': "asdfn"});
+	});
+</script>

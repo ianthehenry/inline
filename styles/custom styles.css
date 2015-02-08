@@ -1,0 +1,82 @@
+.outline-container li:not(.open):not(.closed) > span.line > span.bullet > span:hover { background-image:url('icons/add.png'); }
+.outline-container span.bullet.droppable > span { background-image:url('icons/add.png') !important; }
+
+.outline-container li > span.line > span.bullet { background-image:url('icons/round empty.png'); }
+.outline-container li.open > span.line > span.bullet { background-image:url('icons/round open.png'); }
+.outline-container li.closed > span.line > span.bullet { background-image:url('icons/round closed.png'); }
+
+.outline-container ul.inserting { background-image:url('icons/insert.png'); }
+.outline-container ul.inserting.top { background-image:url('icons/insert top.png'); }
+.outline-container ul.inserting.bottom { background-image:url('icons/insert bottom.png'); }
+.outline-container ul.moving { background-image:url('icons/move.png'); }
+.outline-container ul.moving.top { background-image:url('icons/move top.png'); }
+.outline-container ul.moving.bottom { background-image:url('icons/move bottom.png'); }
+.outline-container span.ellipsis { background-image: url('icons/ellipsis.png'); }
+
+/* ui.js */
+
+.outline-container, #drawer
+{
+	-webkit-box-shadow:1px 1px 3px hsla(0, 0%, 0%, .1);
+}
+
+/* for proper LCARS theme, 
+
+body
+{
+	font-variant:small-caps;
+	font-family:'Swiss911 UCm BT';
+	font-size:25px;
+}
+
+::-webkit-scrollbar
+{
+    width: 18px;
+    height: 18px;
+	background-color:#000;
+}
+
+::-webkit-scrollbar, ::-webkit-scrollbar-track
+{
+	border-left:solid 1px #CC99CC;
+}
+
+::-webkit-scrollbar-button
+{
+	background-color:#CC6699;
+	width: 18px;
+    height: 18px;
+}
+
+::-webkit-scrollbar-button:increment
+{
+	border-radius:9px 9px 0 0;
+}
+
+::-webkit-scrollbar-button:decrement
+{
+	border-radius:0 0 9px 9px;
+}
+
+::-webkit-scrollbar-button:hover
+{
+	background-color:#CC99CC;
+}
+
+::-webkit-scrollbar-track
+{
+	background-color:#000;
+	padding:2px;
+}
+
+::-webkit-scrollbar-thumb
+{
+	background-color:#CC6699;
+	border-radius:9px;
+}
+
+::-webkit-scrollbar-thumb:hover
+{
+	background-color:#CC99CC;
+}
+*/

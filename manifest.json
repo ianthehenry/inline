@@ -1,0 +1,17 @@
+{
+  "name": "Inline",
+  "version": "0.0",
+  "description": "Inline: offline outlining.",
+  "options_page": "options.html",
+  "app": {
+    "launch": {
+      "local_path": "main.html"
+    }
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "manifest_version": 2
+}

@@ -1,0 +1,150 @@
+html
+{
+	height:100%;
+}
+
+body
+{
+	height:100%;
+    background-color: #eee;
+    font-size: 12px;
+    font-family: Verdana, Helvetica, Sans-Serif;
+    margin: 0;
+	line-height:20px;
+}
+
+a:link
+{
+    color: #034af3;
+    text-decoration:none;
+}
+a:visited
+{
+    color: #034af3;
+}
+a:hover
+{
+    color: #034af3;
+    text-decoration: underline;
+}
+a:active
+{
+    color: #eb1287;
+}
+
+*
+{
+    margin:0;
+    padding:0;
+}
+
+p+p
+{
+	margin-top:.5em;
+}
+
+fieldset
+{
+	border:solid 1px #ccc;
+}
+
+legend
+{
+	padding:0 2px 0 2px;
+}
+
+ul
+{
+    list-style:none;
+}
+
+/* End Global Stuff */
+
+.bullet > span
+{
+	position:relative;
+	top:-16px;
+	font-size:40px;
+}
+
+.bullet
+{
+	text-align:center;
+	
+	display:inline-block;
+	vertical-align:baseline;
+	width:40px;
+	height:40px;
+	border-radius:20px 20px 0px 20px;
+	margin:0 10px;
+	background-color:#eee;
+	-webkit-box-shadow:1px 1px 1px #ccc, -1px -1px 1px #fafafa;
+	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #f1f1f1), color-stop(1, #eee));
+}
+
+.title
+{
+	width:320px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+h1
+{
+	margin-top:20px;
+	
+	display:inline-block;
+	font-size:50px;
+	color:hsla(0, 0%, 0%, .1);
+	text-shadow: 1px 1px 1px #fff;
+	
+	/*padding:0 10px;*/
+	
+	height:60px;
+	line-height:60px;
+	width:320px;
+	
+	border-radius:20px 20px 0 0;
+	background-color:#eee;
+	-webkit-box-shadow:1px 1px 1px #ccc, -1px -1px 1px #fafafa;
+	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #f1f1f1), color-stop(1, #eee));
+}
+
+span.credits
+{
+	text-align:center;
+	display:block;
+	color:hsla(0, 0%, 0%, .2);
+	text-shadow: 1px 1px 1px #fff;
+}
+
+div.options
+{
+	background-color:#fff;
+	white-space:pre;
+	
+	padding:5px 10px;
+	width:300px;
+	margin-left:auto;
+	margin-right:auto;
+	
+	border-radius:0 0 5px 5px;
+	
+	-webkit-box-shadow:1px 1px 1px #ccc;
+}
+
+input[type=button]
+{
+	width:36px;
+	padding:2px;
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+span.note
+{
+	color:#aaa;
+	font-style:italic;
+	white-space:normal;
+}

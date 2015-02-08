@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Inline Options</title>
+		<link href="styles/global.css" rel="stylesheet" type="text/css" />
+		<link href="styles/options.css" rel="stylesheet" type="text/css" />
+		<script src="jquery-1.4.4.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+
+			$(init);
+			
+			function init()
+			{
+				var options =
+				{
+					'animationSpeed': 0,
+					'enterKeyExitsEditMode': true
+				};
+				
+				if(localStorage.getItem('options') != undefined)
+					options = JSON.parse(localStorage.getItem('options'));
+				
+				$('#animation-speed-select > option[value=' + options.animationSpeed.toString() + ']').attr('selected', 'selected');
+				
+				if(options.enterKeyExitsEditMode)
+					$('#enter-exits-edit-mode-checkbox').attr('checked', 'checked');
+			
+				$('#save-button').click(function()
+				{
+					localStorage.setItem('options', JSON.stringify(
+					{
+						'animationSpeed': parseInt($('#animation-speed-select').val(), 10),
+						'enterKeyExitsEditMode': $('#enter-exits-edit-mode-checkbox').is(':checked'),
+					}
+					));
+				});
+			}
+		
+		</script>
+	</head>
+	<body>
+	
+		<div class="title">
+		<h1><span class="bullet"><span>•</span></span>Inline</h1>
+		</div>
+		<div class="options">Animation speed: <select id="animation-speed-select">		
+		<option value="300">Slow</option>
+		<option value="200">Normal</option>
+		<option value="100">Fast</option>
+		<option value="0">Instant</option>
+	</select>
+<input id="enter-exits-edit-mode-checkbox" type="checkbox" checked="checked" /><label for="enter-exits-edit-mode-checkbox"> Enter exits edit mode</label>
+<input type="button" id="save-button" value="Save"><span class="note">if inline is open in another tab, you will have to refresh to apply any changes</span></div>
+<span class="credits">Inline Alpha 1 © 2010 Ian Henry</span>
+</body></html>
