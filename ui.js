@@ -37,12 +37,12 @@ var bulletClasses = {
 	}
 };
 
-function saveAll()	
+function saveAll()
 {
 	$('.outline-container').each(function(index, element) { saveOutline($(element)); });
 	saveDocuments();
 	saveWorkspace();
-	
+
 }
 
 function saveOutline($outlineContainer)
@@ -63,7 +63,7 @@ function saveWorkspace()
 			'width': $(element).width()
 		};
 	}).get();
-	
+
 	localStorage.setItem('workspace', JSON.stringify(workspace));
 }
 
@@ -83,7 +83,7 @@ function buildItem(item)
 		else
 			$li.children('ul').hide();
 		$li.find('.title').text(item.title);
-		
+
 		for(var i = 0; i < item.children.length; i++)
 			$li.children('ul').append(buildItem(item.children[i]));
 		return $li;
@@ -121,10 +121,10 @@ function serializeItem($li)
 			'title': $li.find('> .line > .title').text(),
 			'id': $li.find('> .line > .outline-id').val()
 		};
-	
+
 	return {
 		'title': $li.find('> .line > .title').text(),
-		'open': $li.hasClass('open'), 
+		'open': $li.hasClass('open'),
 		'children': $li.find('> ul > li').map(function(index, element) { return serializeItem($(element)); }).get()
 	};
 }
@@ -139,7 +139,7 @@ function restoreWorkspace()
 function loadOptions()
 {
 	options = JSON.parse(localStorage.getItem('options'));
-	
+
 	if(options.animationSpeed == 0)
 		$.fx.off = true;
 }
@@ -147,18 +147,18 @@ function loadOptions()
 function buildOutline(outline)
 {
 	var $outline = $('<ul class="outline"></ul>');
-	
+
 	$outline.append($.map(outline.lines, function(element, index) { return buildLine(element)[0]; }));
-	
+
 	return $outline;
 }
 
 function buildLine(line)
-{	
+{
 	var $newLine = $('<li><span class="line-number"></span><span class="line"><span class="bullet"><span></span></span><span class="collapsed-fadeout"><span class="ellipsis"></span></span><span class="text"></span></span><ul></ul></li>');
 	if(line.collapsed)
 		$newLine.addClass('collapsed');
-		
+
 	if(line.open)
 		$newLine.addClass('open');
 	else if (line.children.length > 0)
@@ -166,21 +166,21 @@ function buildLine(line)
 		$newLine.addClass('closed');
 		$newLine.children('ul').hide();
 	}
-	
+
 	$newLine.addClass(line.class);
-		
+
 	$newLine.find('span.text').text(line.text + '\n');
-	
+
 	if(line.text == '')
 		$newLine.find('span.text').addClass('empty');
-	
+
 	$newLine.children('ul').append($.map(line.children, function(element, index) { return buildLine(element)[0]; }));
-	
+
 	return $newLine;
 }
 
 function serialize($container)
-{	
+{
 	var outline = {
 		'version': 1,
 		'id': $container.attr('id'),
@@ -230,22 +230,22 @@ function initResizing()
 	{
 		if(e.button != 0)
 			return;
-			
+
 		$resizeTarget = $(this).closest('.outline-container, #drawer');
 		//$('body').add($resizeTarget).css('cursor', 'e-resize !important');
 	});
-	
+
 	$(window).mouseup(function(e)
 	{
 		//$('body').add($resizeTarget).css('cursor', '');
 		$resizeTarget = null;
 	});
-	
+
 	$(window).mousemove(function(e)
 	{
 		if($resizeTarget == null)
 			return;
-		
+
 		var rightEdge = $resizeTarget.offset().left + $resizeTarget.outerWidth();
 		var difference = e.clientX - rightEdge;
 		$resizeTarget.width($resizeTarget.width() + difference);
@@ -257,21 +257,21 @@ function initResizing()
 	var dragStart = null;
 	var potentialDragOutline = null;
 	var $dragOutline = null;
-	
+
 	$('.outline-container > .toolbar').live('mousedown', function(e)
 	{
 		if(e.target != this)
 			return;
-			
+
 		dragStart = { x: e.pageX, y: e.pageY };
 		potentialDragOutline = this;
 	});
-	
+
 	$('body').live('mousemove', function(e)
 	{
 		//if(e.target != this)
 		//	return;
-		
+
 		if($dragOutline == null && potentialDragOutline != null && (Math.abs(e.pageX - dragStart.x) > 3 || Math.abs(e.pageY - dragStart.y) > 3))
 		{
 			$dragOutline = $(potentialDragOutline);
@@ -279,7 +279,7 @@ function initResizing()
 
 			$dragOutline.addClass('dragging');
 		}
-		
+
 		$(this).closest('.outline-container').addClass('dragging');
 	});
 
@@ -301,7 +301,7 @@ function closeOutline($container)
 {
 	if($container.length == 0)
 		return;
-		
+
 	saveOutline($container);
 	$('#document-list .outline-id[value=' + $container.attr('id') + ']').closest('li').removeClass('open');
 	$container.addClass('loading').hide(options.animationSpeed * 2, function() { $(this).remove(); $('.scroll-wrapper').css('max-height', getScrollHeight()); });
@@ -313,34 +313,34 @@ function initToolbar()
 	{
 		$(this).toggleClass('off').closest('.outline-container').toggleClass('guidelines');
 	});
-	
+
 	$('.outline-container > .toolbar > .line-numbers').live('click', function()
 	{
 		$(this).toggleClass('off').closest('.outline-container').toggleClass('line-numbers');
 	});
-	
+
 	$('.outline-container > .toolbar > .icon.close').live('click', function(e)
 	{
 		closeOutline($(this).closest('.outline-container'));
 	});
-	
+
 	$('.outline-container > .toolbar > .icon.move-right').live('click', function(e)
 	{
 		moveRight($(this).closest('.outline-container'));
 	});
-	
+
 	$('.outline-container > .toolbar > .icon.move-left').live('click', function(e)
 	{
-		moveLeft($(this).closest('.outline-container'));		
+		moveLeft($(this).closest('.outline-container'));
 	});
 }
 
 function hexToRgb(hex)
 {
 	hex = hex.toUpperCase();
-	
+
 	var vals = '0123456789ABCDEF';
-	
+
 	return (vals.indexOf(hex[0]) * 16 + vals.indexOf(hex[1])).toString() + ',' + (vals.indexOf(hex[2]) * 16 + vals.indexOf(hex[3])).toString() + ',' + (vals.indexOf(hex[4]) * 16 + vals.indexOf(hex[5])).toString();
 }
 
@@ -348,7 +348,7 @@ function loadStyles()
 {
 
 	var round = {
-		'colorProperties': { 
+		'colorProperties': {
 			'backgroundColor': 'EEEEEE',
 			'textColor': '000000',
 			'foregroundColor': 'FFFFFF',
@@ -380,9 +380,9 @@ function loadStyles()
 			'guidelinesBottomLeftY': '10px'
 		}
 	};
-	
+
 	var professional = {
-		'colorProperties': { 
+		'colorProperties': {
 			'backgroundColor': 'EEEEEE',
 			'textColor': '000000',
 			'foregroundColor': 'FFFFFF',
@@ -414,9 +414,9 @@ function loadStyles()
 			'guidelinesBottomLeftY': '5px'
 		}
 	};
-	
+
 	var professionalGray = {
-		'colorProperties': { 
+		'colorProperties': {
 			'backgroundColor': 'EEEEEE',
 			'textColor': '000000',
 			'foregroundColor': 'FFFFFF',
@@ -482,7 +482,7 @@ function loadStyles()
 			'guidelinesBottomLeftY': '5px'
 		}
 	};
-	
+
 	var console = {
 		'colorProperties': {
 			'backgroundColor': '000000',
@@ -516,9 +516,9 @@ function loadStyles()
 			'guidelinesBottomLeftY': '5px'
 		}
 	};
-	
+
 	var style = professional;
-	
+
 	var colorStyles = '\
 body { background-color:rgb($backgroundColor$); color:rgb($textColor$); }\
 .outline-container li.selected > span.line:not(.editing) { color:rgb($selectedTextColor$); }\
@@ -544,7 +544,7 @@ body { background-color:rgb($backgroundColor$); color:rgb($textColor$); }\
 #document-list .folder.root > .line > .buttons { background-image: -webkit-gradient(linear, left bottom, right bottom, color-stop(0, rgba($selectedColor$, 0)), color-stop(0.33, rgba($selectedColor$, 1))); }\
 #document-list .outline > .line > .buttons, #document-list .trash > .line > .buttons { background-image: -webkit-gradient(linear, left bottom, right bottom, color-stop(0, rgba($selectedColor$, 0)), color-stop(0.5, rgba($selectedColor$, 1))); }\
 ';
-	
+
 	var shapeStyles = '\
 body { font-family:\'$font$\'; font-size:$fontSize$; }\
 .outline-container span.line { border-top-left-radius:$lineTopLeftX$ $lineTopLeftY$; border-bottom-left-radius:$lineBottomLeftX$ $lineBottomLeftY$; }\
@@ -557,28 +557,28 @@ body { font-family:\'$font$\'; font-size:$fontSize$; }\
 
 	for(var prop in style.shapeProperties)
 		shapeStyles = shapeStyles.replace(RegExp('\\$' + prop + '\\$', 'g'), style.shapeProperties[prop]);
-	
+
 	var masterString = colorStyles + shapeStyles;
-	
+
 	for(var className in bulletClasses)
 	{
 		var style = bulletClasses[className];
-		
+
 		var styleString = '';
 		if(style.bold)
 			styleString += 'font-weight:bold;';
 		if(style.italic)
 			styleString += 'font-style:italic;';
-		
+
 		if(style.color != '')
 			styleString += 'color:' + style.color + ';';
 
 		if(style.decoration != 'none')
 			styleString += 'text-decoration:' + style.decoration + ';';
-		
+
 		//span.text:not(:focus)
 		styleString = '.outline-container li.' + className + ' > span.line > span.text {' + styleString + '}\n';
-		
+
 		if(style.icon != '')
 			styleString += '.outline-container li.' + className + ' > span.line > span.bullet > span { background-image:url(\'styles/icons/' + style.icon + '.png\'); }\n';
 
@@ -588,7 +588,7 @@ body { font-family:\'$font$\'; font-size:$fontSize$; }\
 
 		masterString += styleString;
 	}
-	
+
 	$('#custom-styles').text(masterString);
 }
 
@@ -611,32 +611,32 @@ function openOutline(outline, instant)
 
 	//.live() does not support the scroll event as of 1.4.4
 	$container.children('.scroll-wrapper').scroll(function() { this.scrollLeft = 0; }).append(buildOutline(outline));
-	
+
 	$container.data('currentCommand', []);
 	$container.data('undoHistory', []);
 	$container.data('redoHistory', []);
 	$container.data('isDirty', false);
-	
+
 	$container.attr('id', outline.id);
 	$container.find('> .toolbar > .title').text(outline.title);
-	
+
 	if(outline.options.guidelines)
 		$container.addClass('guidelines').find('> .toolbar > .icon.guidelines').removeClass('off');
-		
+
 	if(outline.options.lineNumbers)
 		$container.addClass('line-numbers').find('> .toolbar > .icon.line-numbers').removeClass('off');
-	
+
 	$('#document-list .outline-id[value=' + outline.id + ']').closest('li').addClass('open');
-	
+
 	if(instant)
 		$container.appendTo('body');
 	else
 		$container.addClass("loading").hide().appendTo('body').show(options.animationSpeed * 2, function() { $(this).removeClass('loading'); });
-			
+
 	$container.focus();
-	
+
 	$('.scroll-wrapper').css('max-height', getScrollHeight());
-	
+
 	return $container;
 }
 
@@ -655,18 +655,18 @@ function newOutline($folder)
 		'options': { 'lineNumbers': false, 'guidelines': true },
 		'lines': []
 	};
-	
+
 	localStorage.setItem(newOutline.id, JSON.stringify(newOutline));
-	
+
 	var $li = $('<li class="outline"><span class="line"><span class="buttons"><span class="rename" title="Rename"></span></span><input class="outline-id" type="hidden" /><span class="title"></span></span>');
 	$li.find('.outline-id').val(newOutline.id);
 	$li.find('.title').text(newOutline.title);
-	
+
 	if($folder.hasClass('open'))
 		$li.hide().appendTo($folder.children('ul')).slideDown(options.animationSpeed);
 	else
 		$folder.addClass('open').children('ul').append($li).slideDown(options.animationSpeed);
-		
+
 	rename($li);
 }
 
@@ -689,7 +689,7 @@ function newFolder($folder)
 		$newFolder.hide().appendTo($folder.children('ul')).slideDown(options.animationSpeed);
 	else
 		$folder.addClass('open').children('ul').append($newFolder).slideDown(options.animationSpeed);
-		
+
 	rename($newFolder);
 }
 
@@ -706,51 +706,51 @@ function initDrawer()
 	{
 		if($(e.target).hasClass('edit-title'))
 			return;
-			
+
 		var $folder = $(this).closest('li');
-		
+
 		if($folder.find('> ul > li').length == 0)
 			return;
-		
+
 		$folder.toggleClass('open');
-		
+
 		if($folder.hasClass('open'))
 			$folder.children('ul').slideDown(options.animationSpeed);
 		else
 			$folder.children('ul').slideUp(options.animationSpeed);
 	});
-	
+
 	$('#document-list .folder > .line > .buttons > .new-folder').live('click', function(e)
 	{
 		newFolder($(this).closest('.folder'));
 		e.stopPropagation();
 	});
-	
+
 	$('#document-list .folder > .line > .buttons > .new-outline').live('click', function(e)
 	{
 		newOutline($(this).closest('.folder'));
 		e.stopPropagation();
 	});
-	
+
 	$('#document-list * > .line > .buttons > .rename').live('click', function(e)
 	{
 		rename($(this).closest('li'));
 		e.stopPropagation();
 	});
-	
+
 	$('#document-list * > .line > .buttons > .empty').live('click', function(e)
 	{
 		if($(this).closest('.trash').find('> ul > li').length > 0 && confirm("Are you sure you want to empty the trash?\nThere is no way to undo this."))
 			emptyTrash();
 		e.stopPropagation();
 	});
-	
+
 	$('#document-list * > .line > .edit-title').live('keydown', function(e)
 	{
 		if(e.which == keys.enter || e.which == keys.escape)
 			this.blur();
 	});
-	
+
 	$('#document-list .outline > .line > .edit-title').live('blur', function(e)
 	{
 		var id = $(this).siblings('.outline-id').val();
@@ -761,14 +761,14 @@ function initDrawer()
 			localStorage.setItem(id, JSON.stringify(outline));
 		}
 	});
-	
+
 	$('#document-list * > .line > .edit-title').live('blur', function(e)
 	{
 		$(this).siblings('.title').text($(this).val()).show();
 		$(this).closest('li').removeClass('editing');
 		$(this).remove();
 	});
-	
+
 	$('#document-list .outline > .line').live('click', function(e)
 	{
 		var id = $(this).children('.outline-id').val();
@@ -780,7 +780,7 @@ function initDrawer()
 	{
 		if($('#readonly.outline-container').focus().length > 0)
 			return;
-	
+
 		openOutline({
 			'version': 1,
 			'id': 'readonly',
@@ -789,7 +789,7 @@ function initDrawer()
 			'lines': [{"text":"This is a fully interactive help document. Feel free to make any changes you want; they won't be saved so you can always get back to the original if you screw stuff up.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Notes","collapsed":false,"open":false,"class":"","children":[{"text":"Google Chrome does not allow interaction with the system clipboard yet. Instead, I've simulated a simple clipboard, but it will not persist if you refresh or close the Inline window.","collapsed":false,"open":false,"class":"","children":[]},{"text":"If you drag a line from one outline to another, this is recorded by the undo history as a distinct operation on each outline, so undoing one operation will not undo the other.","collapsed":false,"open":false,"class":"","children":[]},{"text":"You don't need to worry about saving.","collapsed":false,"open":false,"class":"","children":[{"text":"Outlines are automatically saved when you close them.","collapsed":false,"open":false,"class":"","children":[]},{"text":"All open outlines are automatically saved when you close Chrome, close the Inline tab, or navigate to a different page.","collapsed":false,"open":false,"class":"","children":[]},{"text":"All open outlines are automatically saved every 30 seconds.","collapsed":false,"open":false,"class":"","children":[]}]},{"text":"Outlines are artificially limited to 600 pixels high. This will change to fit the height of the window soon.","collapsed":false,"open":false,"class":"","children":[]}]},{"text":"Keyboard Shortcuts","collapsed":false,"open":false,"class":"","children":[{"text":"Standard Operations","collapsed":false,"open":false,"class":"","children":[{"text":"Ctrl+z: Undo.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Ctrl+shift+z: Redo.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Ctrl+c: Copy the selected lines.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Ctrl+x: Cut the selected lines.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Ctrl+v: Paste the selected lines after the focus.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Ctrl+shift+v: Paste the selected lines before the focus.","collapsed":false,"open":false,"class":"","children":[]}]},{"text":"Navigation","collapsed":false,"open":false,"class":"","children":[{"text":"Up/down: Select line above/below the focus.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Right/left: Open/close the selected lines.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Shift+right/left: Expand/collapse the selected lines.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Shift+up/down: Union select the line above/below the focus.","collapsed":false,"open":true,"class":"","children":[{"text":"If the line above/below is already selected, this deselects the current line. This isn't a great solution when you have discontiguous selections, but it works fine otherwise.","collapsed":false,"open":false,"class":"note","children":[]}]},{"text":"Ctrl+shift+up/down: Move the focus up/down without deselecting any other lines.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Home: Select the focused line's parent.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Ctrl+home: Select the first line of the outline.","collapsed":false,"open":false,"class":"","children":[]},{"text":"You can use shift+home and shift+ctrl+home as well.","collapsed":false,"open":false,"class":"note","children":[]},{"text":"I haven't added the end key yet; sue me.","collapsed":false,"open":false,"class":"note","children":[]}]},{"text":"Managing Multiple Outlines","collapsed":false,"open":false,"class":"","children":[{"text":"`: Select the next outline.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Shift+`: Select the previous outline.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Ctrl+shift+left: Move the current outline to the left.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Ctrl+shift+right: Move the current outline to the right.","collapsed":false,"open":false,"class":"","children":[]}]},{"text":"Insertion/deletion","collapsed":false,"open":false,"class":"","children":[{"text":"Enter: Insert a line after the focus.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Shift+enter: Insert a line before the focus.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Ctrl+enter: Append a child line to the focus.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Ctrl+shift+enter: Prepend a child line to the focus.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Backspace/delete: Delete the selected lines.","collapsed":false,"open":false,"class":"","children":[]}]},{"text":"Organization","collapsed":false,"open":false,"class":"","children":[{"text":"Ctrl+up: Move the selected lines up.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Ctrl+down: Move the selected lines down.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Tab: indent the selected lines.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Shift+tab: outdent the selected lines.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Q: Indent the selected lines without their children.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Shift+q: Outdent the selected lines' children.","collapsed":false,"open":false,"class":"","children":[]}]},{"text":"Editing","collapsed":false,"open":false,"class":"","children":[{"text":"F2: toggle edit mode.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Escape: exit edit mode.","collapsed":false,"open":false,"class":"","children":[]},{"text":"E: enter edit mode.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Up: (when caret is at the start of the line): Exit edit mode and select the line above.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Down: (when caret is at the end of the line): Exit edit mode and select the line below.","collapsed":false,"open":false,"class":"","children":[]}]},{"text":"Bullet Classes","collapsed":false,"open":false,"class":"","children":[{"text":"Z: Toggle Important class.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Space: Toggle Done class.","collapsed":false,"open":false,"class":"","children":[]},{"text":"C: Cycle color classes.","collapsed":false,"open":false,"class":"","children":[]},{"text":"N: Toggle Note class.","collapsed":false,"open":false,"class":"","children":[]}]},{"text":"HJKL keys can be used instead of arrow keys for all operations.","collapsed":false,"open":false,"class":"note","children":[]}]},{"text":"Known Bugs","collapsed":false,"open":false,"class":"","children":[{"text":"Dragging text while editing a line causes a few problems. Don't do it.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Pressing backspace/delete really fast can cause no selection when animations are enabled.","collapsed":false,"open":false,"class":"","children":[]},{"text":"Insert/move icons render underneath (z-index-wise) line numbers","collapsed":false,"open":false,"class":"","children":[]},{"text":"Pasting text while editing does not work very well.","collapsed":false,"open":false,"class":"","children":[]},{"text":"You can't deselect the line with focus using ctrl+click.","collapsed":false,"open":false,"class":"","children":[]},{"text":"If you start dragging a folder, but end the drag operation on the folder itself, the click event is fired. Same for outlines.","collapsed":false,"open":false,"class":"","children":[]},{"text":"When dragging to resize, if your mouse stops over the margin on the outline to the right, the resizing breaks until your cursor leaves it.","collapsed":false,"open":false,"class":"","children":[]}]}]
 		});
 	});
-	
+
 	$('#document-list > .options').live('click', function(e)
 	{
 		window.open('options.html', 'options');
@@ -802,12 +802,12 @@ function move($li, $targetUl, index)
 		return;
 
 	var $oldParent = $li.parent();
-	
+
 	if(index == -1 || index == $targetUl.children().length)
 		$li.appendTo($targetUl);
 	else if($targetUl.children()[index] != $li[0]) //trying to insert an element before itself just deletes the element.
 		$li.insertBefore($targetUl.children().nth(index));
-	
+
 	if($oldParent.children().length == 0)
 		$oldParent.parent().addClass('open');
 }
@@ -870,7 +870,7 @@ function initDrawerSorting()
 	{
 		$(this).removeClass('moving');
 	});
-	
+
 	$('#document-list ul').live('mouseup', function(e)
 	{
 		if($dragItem == null)
@@ -897,17 +897,17 @@ function initDrawerSorting()
 	{
 		if($dragItem == null)
 			return;
-		
+
 		move($dragItem, $(this).closest('li').children('ul'), -1);
 		$dragItem.removeClass('dragging');
 		$dragItem = null;
 	});
-	
+
 	$('#document-list .folder:not(.trash):not(.root) > .line').live('mouseleave', function(e)
 	{
 		$(this).removeClass('hover');
 	});
-	
+
 	$('#document-list .folder:not(.trash):not(.root) > .line').live('mousemove', function(e)
 	{
 		if(e.offsetX > 20)
@@ -919,23 +919,23 @@ function initDrawerSorting()
 			e.stopPropagation();
 		}
 	});
-	
+
 	$('#document-list > li.trash > .line, #document-list > li.root > .line').live('mouseenter', function(e)
 	{
 		if($dragItem != null)
 			$(this).addClass('hover');
 	});
-	
+
 	$('#document-list > li.trash > .line, #document-list > li.root > .line').live('mouseleave', function(e)
 	{
 		$(this).removeClass('hover');
 	});
-	
+
 	$('#document-list').mouseup(function(e)
 	{
 		$potentialDragItem = null;
 	});
-	
+
 	$('#document-list').mousemove(function(e)
 	{
 		if($dragItem == null && $potentialDragItem != null && (Math.abs(e.pageX - dragStart.x) > 3 || Math.abs(e.pageY - dragStart.y) > 3))
@@ -955,9 +955,9 @@ function emptyTrash()
 		closeOutline($('#' + element.value + '.outline-container'));
 		localStorage.removeItem(element.value);
 	});
-	
+
 	$('#document-list > li.trash > ul > li').remove();
-	
+
 	$('#document-list > li.trash').removeClass('open');
 	saveDocuments();
 }
@@ -973,9 +973,9 @@ function initUi()
 	initDrawer();
 	initDrawerSorting();
 	//initReordering();
-	
+
 	setInterval(saveAll, 30000);
-	
+
 	window.onunload = function()
 	{
 		saveAll();

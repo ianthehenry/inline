@@ -60,14 +60,14 @@ $.fn.contains = function(element)
 function getAbsoluteLocation($li)
 {
 	var position = [];
-	
+
 	var $current = $li;
 	while($current.is('li'))
 	{
 		position.unshift($current.siblings(':not(.ignore)').andSelf().index($current[0]));
 		$current = $current.parent().parent();
 	}
-	
+
 	return position;
 }
 
@@ -118,10 +118,10 @@ function undoAction(action)
 function getUlAtPosition(position)
 {
 	$current = $('.outline-container:focus ul.outline');
-	
+
 	for(var i = 0; i < position.length; i++)
 		$current = $current.children(':not(.ignore)').nth(position[i]).children('ul');
-	
+
 	return $current;
 }
 
@@ -138,7 +138,7 @@ function doCommand(command)
 
 	for(var i = 0; i < command.length; i++)
 		doAction(command[i]);
-	
+
 	$('.outline-container:focus').data('currentCommand',  []);
 	scrollToFocus();
 }
@@ -149,17 +149,17 @@ function doAction(action)
 	{
 		case 'move':
 			var $li = getLiAtPosition(action.oldLocation);
-			
+
 			$li.addClass('ignore');
 			var $targetUl = getUlAtPosition(action.newLocation.slice(0, action.newLocation.length - 1));
 			$li.removeClass('ignore');
-			
+
 			//the moveLine command's index argument expects a "slot", the space between two items. thus the top is 0, the space between the first and second rows is 1, etc.
 			//but action.newLocation is the literal index the element should appear. this does not always correspond to the slot index, hence this logic.
 			var desiredIndex = action.newLocation[action.newLocation.length - 1];
 			if($targetUl.children().nth(desiredIndex).prevAll().contains($li[0]))
 				desiredIndex += 1;
-						
+
 			moveLine($li, $targetUl, desiredIndex, true);
 			unionSelect($li);
 			break;
@@ -207,37 +207,37 @@ function debug_updateHistory($container)
 	return;
 	if(typeof($container) == 'undefined')
 		$container = getCurrentOutline();
-		
+
 	$('#undo-history').children().remove();
 	$('#undo-history').append(
 		$.map($container.data('undoHistory'), function(command)
 		{
 			var $li = $('<li class="command"><ul></ul></li>');
-			
+
 			$li.children('ul').append(
 				$.map(command, function(action)
 				{
 					return $('<li class="action">' + stringifyAction(action) + '</li>')[0];
 				})
 			);
-			
+
 			return $li[0];
 		})
 	);
-	
+
 	$('#redo-history').children().remove();
 	$('#redo-history').append(
 		$.map($container.data('redoHistory'), function(command)
 		{
 			var $li = $('<li class="command"><ul></ul></li>');
-			
+
 			$li.children('ul').append(
 				$.map(command, function(action)
 				{
 					return $('<li class="action">' + stringifyAction(action) + '</li>')[0];
 				})
 			);
-			
+
 			return $li[0];
 		})
 	);
@@ -284,7 +284,7 @@ function undo()
 function redo()
 {
 	var $container = $('.outline-container:focus');
-	
+
 	if($container.data('redoHistory').length == 0)
 		return;
 	var command = $container.data('redoHistory').pop();
@@ -298,15 +298,15 @@ function endCommand()
 	$('.outline-container').each(function(index, element)
 	{
 		var $container = $(element);
-		
+
 		if($container.data('currentCommand').length == 0)
 			return;
-			
+
 		$container.data('isDirty', true);
 		$container.data('undoHistory').push($container.data('currentCommand'));
 		$container.data('currentCommand',  []);
 		$container.data('redoHistory',  []);
-		
+
 		debug_updateHistory($container);
 	});
 }
@@ -338,17 +338,17 @@ function pasteAfter()
 	var $focus = getCurrentOutline().find('.focus');
 	if($focus.length == 0)
 		return;
-		
+
 	var startIndex = $focus.index() + 1;
 	var $targetUl = $focus.parent();
-	
+
 	dropSelection();
 
 	$.each(clipboard, function(index, line)
 	{
 		unionSelect(addLine($targetUl, startIndex + index, line));
 	});
-	
+
 	endCommand();
 }
 
@@ -357,10 +357,10 @@ function pasteBefore()
 	var $focus = getCurrentOutline().find('.focus');
 	if($focus.length == 0)
 		return;
-		
+
 	var startIndex = $focus.index();
 	var $targetUl = $focus.parent();
-	
+
 	dropSelection();
 
 	clipboard.reverse();
@@ -368,9 +368,9 @@ function pasteBefore()
 	{
 		unionSelect(addLine($targetUl, startIndex, line));
 	});
-	
+
 	clipboard.reverse();
-	
+
 	endCommand();
 }
 
@@ -468,7 +468,7 @@ function indexOf($ul, targetOffset, eventOffset)
 		if(itemCenter > targetOffset - $ul.offset().top + eventOffset)
 			break;
 	}
-	
+
 	return i;
 }
 
@@ -485,13 +485,13 @@ function initDrag()
 			return;
 
 		clearTimeout($this.data('timer'));
-		
+
 		$this.removeClass('droppable');
 		$this.closest('ul').removeClass('child-dropping');
-		
+
 		var $destUl = $this.parent().siblings('ul');
 		moveSelection($destUl, $destUl.children().length); //important not to use -1, in case multiple items are being dropped
-		
+
 		getSelectedLines().removeClass('dragging');
 		dragging = false;
 		e.stopPropagation();
@@ -500,7 +500,7 @@ function initDrag()
 	$('.outline-container span.bullet').live('mouseenter', function(e)
 	{
 		var $this = $(this);
-		
+
 		if(!dragging || $this.closest('li.dragging').length > 0)
 			return;
 
@@ -514,7 +514,7 @@ function initDrag()
 		$this.addClass('droppable');
 		$this.closest('ul').addClass('child-dropping');
 	});
-	
+
 	$('.outline-container span.bullet').live('mouseleave', function(e)
 	{
 		var $this = $(this);
@@ -522,7 +522,7 @@ function initDrag()
 			return;
 
 		clearTimeout($this.data('timer'));
-		
+
 		$this.removeClass('droppable');
 		$this.closest('ul').removeClass('child-dropping');
 	});
@@ -532,7 +532,7 @@ function initDrag()
 		$potentialDragLine = null;
 		if(!dragging)
 			return;
-		
+
 		var $this = $(this);
 
 		$this.removeClass('moving');
@@ -604,7 +604,7 @@ function select($li)
 
 	if($li == null)
 		return;
-	
+
 	$li.addClass('selected').last().addClass('focus');
 	scrollToFocus();
 	var $text = $li.find('> span.line > span.text');
@@ -621,10 +621,10 @@ function unionSelectTo($li)
 {
 	if($li.hasClass('focus'))
 		return;
-		
+
 	var $current = $('.outline-container:focus li.focus');
 	$current.removeClass('focus').find('> .line > .text').attr('contenteditable', 'false');
-	
+
 	if($current.add($li).first()[0] == $current[0])
 		while($current[0] != $li[0])
 		{
@@ -637,7 +637,7 @@ function unionSelectTo($li)
 			$current = getVisuallyAbove($current);
 			$current.addClass('selected');
 		}
-		
+
 	$li.addClass('focus').find('> .line > .text').attr('contenteditable', 'true');
 }
 
@@ -645,10 +645,10 @@ function deselectTo($li)
 {
 	if($li.hasClass('focus'))
 		return;
-		
+
 	var $current = $('.outline-container:focus li.focus');
 	$current.removeClass('focus').find('> .line > .text').attr('contenteditable', 'false');
-	
+
 	if($current.add($li).first()[0] == $current[0])
 		while($current[0] != $li[0])
 		{
@@ -661,7 +661,7 @@ function deselectTo($li)
 			$current.removeClass('selected');
 			$current = getVisuallyAbove($current);
 		}
-		
+
 	$li.addClass('selected').addClass('focus').find('> .line > .text').attr('contenteditable', 'true');
 	scrollToFocus();
 }
@@ -670,7 +670,7 @@ function unionSelect($li, option)
 {
 	if($li == null)
 		return;
-	
+
 	if(option === 'toggle' && $li.hasClass('selected'))
 	{
 		if(!$li.hasClass('focus')) //todo
@@ -680,10 +680,10 @@ function unionSelect($li, option)
 	{
 		var $previousFocus = $('.outline-container:focus li.focus');
 		$previousFocus.removeClass('focus').find('> .line > .text').attr('contenteditable', 'false');
-		
+
 		if($li.hasClass('selected') || option === 'deselect current')
-			$previousFocus.removeClass('selected');	
-		
+			$previousFocus.removeClass('selected');
+
 		$li.addClass('selected').addClass('focus').find('> .line > .text').attr('contenteditable', 'true');
 	}
 	scrollToFocus();
@@ -699,7 +699,7 @@ function scrollToFocus(scrollToBottom)
 	var $wrapper = $('.outline-container:focus > .scroll-wrapper');
 	var scrollHeight = $wrapper.height() - 1; //for the margin
 	var $target = $('.outline-container:focus li.focus');
-	
+
 	if($target.length == 0)
 		return;
 
@@ -707,10 +707,10 @@ function scrollToFocus(scrollToBottom)
 
 	if(bottom > scrollHeight - buffer)
 		$wrapper.scrollTop($wrapper.scrollTop() + (bottom - scrollHeight) + buffer);
-	
+
 	if(scrollToBottom)
 		return;
-		
+
 	var top = $target.offset().top + 1 - $wrapper.offset().top; //plus 1 is for the margin of -1
 	if(top < buffer)
 		$wrapper.scrollTop($wrapper.scrollTop() + top - buffer);
@@ -755,10 +755,10 @@ function deleteLine($li)
 {
 	if($li.length == 0)
 		return false;
-	
+
 	if($li.length > 1)
 		throw "deleteLine cannot operate on multiple lines";
-		
+
 	if($li.siblings(':not(.ignore)').length == 0)
 		$li.parent().closest('li').removeClass('closed').removeClass('open');
 
@@ -772,10 +772,10 @@ function addLine($ul, index, line)
 {
 	if($ul.length == 0)
 		return false;
-		
+
 	if($ul.length > 1)
 		throw "addLine cannot operate on multiple lines";
-		
+
 	var $newLine = buildLine(line);
 
 	if(index == -1 || index == $ul.children().length)
@@ -794,13 +794,13 @@ function moveLine($li, $targetUl, index, customAnimation)
 {
 	if($li.length == 0 || $targetUl.length == 0)
 		return;
-		
+
 	if($li.length > 1 || $targetUl.length > 1)
 		throw "moveLine cannot operate on multiple lines";
-		
+
 	if($targetUl.children().length == 0)
 		$targetUl.closest('li').addClass('open');
-		
+
 	var $oldParent = $li.parent();
 	var $oldOutline = $li.closest('.outline-container');
 	var oldLocation = getAbsoluteLocation($li);
@@ -823,7 +823,7 @@ function moveLine($li, $targetUl, index, customAnimation)
 
 	if($oldParent.children().length == 0)
 		$oldParent.show().parent().removeClass('open').removeClass('closed');
-	
+
 	var newLocation = getAbsoluteLocation($li);
 	var $newOutline = $li.closest('.outline-container');
 
@@ -841,11 +841,11 @@ function areAbsoluteLocationsTheSame(a, b)
 {
 	if(a.length != b.length)
 		return false;
-		
+
 	for(var i = 0; i < a.length; i++)
 		if(a[i] != b[i])
 			return false;
-			
+
 	return true;
 }
 
@@ -853,10 +853,10 @@ function openLine($li)
 {
 	if($li.length > 1)
 		throw "openLine cannot operate on multiple lines";
-		
+
 	if($li.hasClass('open') || $li.find('> ul > li:not(.ignore)').length == 0)
 		return;
-		
+
 	$li.removeClass('closed').addClass('open').children('ul').slideDown2({'duration': options.animationSpeed, 'step': scrollToFocus, 'complete': scrollToFocus });
 	pushAction({ 'type': 'open', 'location': getAbsoluteLocation($li) });
 }
@@ -865,15 +865,15 @@ function closeLine($li)
 {
 	if($li.length > 1)
 		throw "closeLine cannot operate on multiple lines";
-		
+
 	if($li.hasClass('closed') || $li.find('> ul > li:not(.ignore)').length == 0)
 		return;
-	
+
 	if($li.find('li.focus').length > 0)
 		$li.addClass('focus').find('li.focus').removeClass('focus');
-		
+
 	$li.find('.selected').removeClass('selected');
-	
+
 	$li.removeClass('open').addClass('closed').children('ul').slideUp(options.animationSpeed);
 	pushAction({ 'type': 'close', 'location': getAbsoluteLocation($li) });
 }
@@ -887,7 +887,7 @@ function collapseLine($li, suppressActionLog)
 		return;
 
 	$li.children('span.line').animate({'height': '20px'}, $li.children('span.line').height() == 20 ? 0 : options.animationSpeed, function() { $li.addClass('collapsed'); scrollToFocus(); });
-	
+
 	if(suppressActionLog !== true)
 		pushAction({ 'type': 'collapse', 'location': getAbsoluteLocation($li) });
 }
@@ -913,13 +913,13 @@ function setBulletClass($li, newClass)
 		throw "setBulletClass cannot operate on multiple lines";
 
 	var oldClass = getBulletClass($li);
-	
+
 	if(oldClass == newClass)
 		return;
-	
+
 	$li.removeClass(oldClass);
 	$li.addClass(newClass);
-	
+
 	pushAction({'type': 'class', 'location': getAbsoluteLocation($li), 'oldClass': oldClass, 'newClass': newClass});
 }
 
@@ -928,15 +928,15 @@ function setBulletClass($li, newClass)
 /* Commands */
 
 function cycleSelectionBulletClass(classes)
-{	
+{
 	var $selection = getSelectedLines();
 
 	$selection.each(function(index, element)
 	{
 		var $li = $(element);
-		
+
 		var classIndex = classes.indexOf(getBulletClass($li));
-		
+
 		if(classIndex == -1)
 			setBulletClass($li, classes[0]);
 		else if(classIndex == classes.length - 1)
@@ -944,7 +944,7 @@ function cycleSelectionBulletClass(classes)
 		else
 			setBulletClass($li, classes[classIndex + 1]);
 	});
-	
+
 	endCommand();
 }
 
@@ -955,13 +955,13 @@ function toggleSelectionBulletClass(newClass)
 	$selection.each(function(index, element)
 	{
 		var $li = $(element);
-		
+
 		if($li.hasClass(newClass))
 			setBulletClass($li, '');
 		else
 			setBulletClass($li, newClass);
 	});
-	
+
 	endCommand();
 }
 
@@ -984,15 +984,15 @@ function deselectSelectedChildren()
 function deleteSelection()
 {
 	deselectSelectedChildren();
-	
+
 	var $focus = $('.outline-container:focus li.focus');
-	
+
 	var $newFocus = $focus.nextAll(':not(.selected)').first();
 	if($newFocus.length == 0)
 		$newFocus = $focus.prevAll(':not(.selected)').first();
 	if($newFocus.length == 0)
 		$newFocus = $focus.closest('li:not(.selected)');
-	
+
 	getSelectedLines().each(function(index, element) { deleteLine($(element)) } );
 	select($newFocus);
 	endCommand();
@@ -1005,23 +1005,23 @@ function moveSelection($targetUl, index)
 		dropSelection($newOutline);
 
 	var $selection = getSelectedLines();
-	
+
 	var increment = 0;
 	$selection.reach(function(i, element)
-	{	
+	{
 		var $li = $(element);
 		var sameParent = $li.parent()[0] == $targetUl[0];
 		var oldIndex = $li.index();
-		
+
 		moveLine($li, $targetUl, index + increment);
 		if(sameParent && oldIndex <= index)
 			increment--;
 	});
-	
-	
+
+
 	//should drop the new outline's current selection
 	$newOutline.focus();
-	
+
 	scrollToFocus();
 	endCommand();
 }
@@ -1034,7 +1034,7 @@ function moveSelectionUp()
 		var $prev = $li.prev(':not(.ignore)');
 		if($prev.length == 0 || $prev.hasClass('selected'))
 			return;
-		
+
 		moveLine($li, $li.parent(), $li.index() - 1);
 	});
 
@@ -1063,7 +1063,7 @@ function bulletAction($li)
 		return;
 	if($li.length > 1)
 		throw "Cannot invoke bulletAction for multiple lines";
-		
+
 	if($li.hasClass('closed'))
 	{
 		openLine($li);
@@ -1086,22 +1086,22 @@ function indentSelectionWithoutChildren()
 
 		if($li.prev(':not(.ignore)').length == 0)
 			return;
-		
+
 		var $newParent = $li.prev(':not(.ignore)');
-		
+
 		moveLine($li, $newParent.children('ul'), -1, true);
-		
+
 		$li.find('> ul > li').reach(function(jndex, child)
 		{
 			moveLine($(child), $li.parent(), $li.index() + 1, true);
 		});
-		
+
 		if($newParent.hasClass('closed'))
 			openLine($newParent);
 		else
 			$li.children('span.line').css('margin-left', '-20px').animate({ 'margin-left': 0 }, { 'duration': options.animationSpeed, 'queue': false,  'complete': function() { $(this).css('margin-left', '') } });
 	});
-	
+
 	endCommand();
 }
 
@@ -1110,21 +1110,21 @@ function outdentSelection()
 	getSelectedLines().each(function(index, element)
 	{
 		var $li = $(element);
-		
+
 		if($li.parent().hasClass('outline'))
 			return;
-		
+
 		$li.nextAll(':not(.ignore)').css('margin-left', '-20px').animate({ 'margin-left': 0 }, { 'duration': options.animationSpeed, 'queue': false,  'complete': function() { $(this).css('margin-left', '') } });
 		$li.nextAll(':not(.ignore)').each(function(jindex, next)
 		{
 			moveLine($(next), $li.children('ul'), -1, true);
 		});
-		
+
 		moveLine($li, $li.parent().parent().parent(), $li.parent().parent().index() + 1, true);
-		
+
 		$li.css('margin-left', '20px').animate({ 'margin-left': 0 }, { 'duration': options.animationSpeed, 'queue': false,  'complete': function() { $(this).css('margin-left', '') } });
 	});
-	
+
 	endCommand();
 }
 
@@ -1136,17 +1136,17 @@ function indentSelection()
 
 		if($li.prev(':not(.ignore)').length == 0)
 			return;
-		
+
 		var $newParent = $li.prev();
-		
+
 		moveLine($li, $newParent.children('ul'), -1, true);
-		
+
 		if($newParent.hasClass('closed'))
 			openLine($newParent);
 		else
 			$li.css('margin-left', '-20px').animate({ 'margin-left': 0 }, { 'duration': options.animationSpeed, 'queue': false,  'complete': function() { $(this).css('margin-left', '') } });
 	});
-	
+
 	endCommand();
 }
 
@@ -1156,17 +1156,17 @@ function outdentSelectionChildren()
 	getSelectedLines().each(function(index, element)
 	{
 		var $li = $(element);
-		
+
 		if($li.find('> ul > li').length == 0)
 			return;
 
-		$li.find('> ul > li').css('margin-left', '20px').animate({ 'margin-left': 0 }, { 'duration': options.animationSpeed, 'queue': false,  'complete': function() { $(this).css('margin-left', '') } });					
+		$li.find('> ul > li').css('margin-left', '20px').animate({ 'margin-left': 0 }, { 'duration': options.animationSpeed, 'queue': false,  'complete': function() { $(this).css('margin-left', '') } });
 		$li.find('> ul > li').reach(function(jndex, child)
 		{
 			moveLine($(child), $li.parent(), $li.index() + 1, true);
-		});		
+		});
 	});
-	
+
 	endCommand();
 }
 
@@ -1176,7 +1176,7 @@ function openSelection()
 	{
 		openLine($(element));
 	});
-	
+
 	endCommand();
 }
 
@@ -1186,7 +1186,7 @@ function closeSelection()
 	{
 		closeLine($(element));
 	});
-	
+
 	endCommand();
 }
 
@@ -1196,7 +1196,7 @@ function expandSelection()
 	{
 		expandLine($(element));
 	});
-	
+
 	endCommand();
 }
 
@@ -1206,7 +1206,7 @@ function collapseSelection()
 	{
 		collapseLine($(element));
 	});
-	
+
 	endCommand();
 }
 
@@ -1260,11 +1260,11 @@ function initEditing()
 			newRange.setStart(newSelection.anchorNode, anchorOffset);
 			newSelection.removeAllRanges();
 			newSelection.addRange(newRange);
-			document.execCommand('InsertHTML', true, $('#clipboard').val());			
+			document.execCommand('InsertHTML', true, $('#clipboard').val());
 			$('#clipboard').val(''); //this sort of fixes an annoying bug where undo causes the caret to move to the #clipboard. this breaks undo altogether, but it is better. i don't know why this does that.
 		});
 	});
-	
+
 	$('.outline-container span.text').live('DOMNodeInserted', function(e)
 	{
 		alert("Illegal DOM Node Insertion -- attempting to sanitize");
@@ -1274,7 +1274,7 @@ function initEditing()
 	});
 
 	$('.outline-container li.selected > span.line > span.text').live('mousedown', function(e) { e.stopPropagation(); }); //allows drag-selection of text
-	
+
 	$('.outline-container li.focus > span.line:not(.editing)').live('mousedown', function(e) { return false; }); //enables you to drag the focus -- otherwise mousedown enters edit mode
 
 	$('.outline-container li.selected > span.line > span.text').live('keydown', function(e)
@@ -1316,31 +1316,31 @@ function initEditing()
 		return false;
 	});
 
-	$('.outline-container li.selected > span.line > span.text').live('focus', function() 
-	{ 
+	$('.outline-container li.selected > span.line > span.text').live('focus', function()
+	{
 		var $this = $(this);
 		$this.removeClass('empty');
-		
+
 		if($this.closest('li').hasClass('collapsed'))
 		{
 			expandLine($this.closest('li'), true);
 			$this.data('collapseOnBlur', true);
 		}
-		
+
 		$this.data('oldText', $this.text());
 		$this.parent().closest('.outline-container').andSelf().addClass('editing');
 	});
-	
+
 	$('.outline-container li.selected > span.line > span.text').live('blur', function()
 	{
 		var $this = $(this);
-	
+
 		if($this.data('collapseOnBlur') === true)
 		{
 			$this.removeData('collapseOnBlur');
 			collapseLine($this.closest('li'), true);
 		}
-		
+
 		if($this.text() != $this.data('oldText'))
 		{
 			var $container = $(this).closest('.outline-container');
@@ -1349,7 +1349,7 @@ function initEditing()
 		}
 
 		$this.removeData('oldText');
-	
+
 		$this.parent().closest('.outline-container').andSelf().removeClass('editing');
 		if($this.text() == '\n')
 			$this.addClass('empty');
@@ -1365,14 +1365,14 @@ function initKeyboard()
 	{
 		if(isInputElement(e.target))
 			return;
-	
+
 		if(dragging)
 			return false;
 
 		var $focus = $('.outline-container:focus li.focus');
 		if($focus.length > 1)
 			throw "Multiple focii detected";
-		
+
 		if(e.shiftKey && e.metaKey)
 		{
 			switch(e.which)
@@ -1570,7 +1570,7 @@ function initKeyboard()
 					return;
 			}
 		}
-		
+
 		return false;
 	});
 }
@@ -1579,13 +1579,13 @@ function initFirstStart()
 {
 	if(localStorage.getItem('trash') == undefined)
 		localStorage.setItem('trash', '[]');
-		
+
 	if(localStorage.getItem('workspace') == undefined)
 		localStorage.setItem('workspace', '[]');
-		
+
 	if(localStorage.getItem('options') == undefined)
 		localStorage.setItem('options', '{"animationSpeed":0,"enterKeyExitsEditMode":true}');
-		
+
 	if(localStorage.getItem('outlines') == undefined)
 		localStorage.setItem('outlines', '[]');
 }
@@ -1605,12 +1605,12 @@ function overrideCopy(e)
 {
 	if(isInputElement(e.target))
 		return;
-	
+
 	var $prevFocus = $('.outline-container:focus');
 	$prevFocus.addClass('clipboarding');
-	
+
 	$('#clipboard').val(Ion.stringify(getSelectedLines().not('.selected .selected'))).select();
-	
+
 	setTimeout(function()
 	{
 		$prevFocus.focus().removeClass('clipboarding');
@@ -1621,12 +1621,12 @@ function overrideCut(e)
 {
 	if(isInputElement(e.target))
 		return;
-	
+
 	var $prevFocus = $('.outline-container:focus');
 	$prevFocus.addClass('clipboarding');
-	
+
 	$('#clipboard').val(Ion.stringify(getSelectedLines().not('.selected .selected'))).select();
-	
+
 	setTimeout(function()
 	{
 		$prevFocus.focus().removeClass('clipboarding');
@@ -1638,39 +1638,39 @@ function overridePaste(e)
 {
 	if(isInputElement(e.target))
 		return;
-	
+
 	var $prevFocus = $('.outline-container:focus');
 	$prevFocus.addClass('clipboarding');
-	
+
 	$('#clipboard').val('').focus();
-	
+
 	setTimeout(function()
 	{
 		$prevFocus.focus().removeClass('clipboarding');
 		var $focus = getCurrentOutline().find('.focus');
 		if($focus.length == 0)
 			return;
-		
+
 		var text = $('#clipboard').val();
 		var lines = Ion.tryParse(text);
-		
+
 		var startIndex = $focus.index() + 1;
 		var $targetUl = $focus.parent();
-				
+
 		if(lines === false)
 		{
 			select(addLine($targetUl, startIndex, { 'open': false, 'collapsed': false, 'text': text, 'children': [], 'class': '' }));
 		}
 		else
-		{				
+		{
 			dropSelection();
-		
+
 			$.each(lines, function(index, line)
 			{
 				unionSelect(addLine($targetUl, startIndex + index, line));
 			});
 		}
-		
+
 		endCommand();
 
 	});
@@ -1685,23 +1685,23 @@ function init()
 	initKeyboard();
 	initEditing();
 	initUi();
-	
+
 	// This actually works perfectly:
 	$(window).bind('copy', overrideCopy);
 	$(window).bind('paste', overridePaste);
 	$(window).bind('cut', overrideCut);
-	
+
 	$(window).bind('resize', function()
 	{
 		$('.scroll-wrapper').css('max-height', getScrollHeight());
 	});
-		
+
 	//can't fix this...
 	$('.outline-container span.text').live('dragover drop', function(event)
 	{
 		event.preventDefault();
 		return false;
 	});
-	
+
 	$('.outline-container:first').focus();
 }
