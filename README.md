@@ -2,7 +2,7 @@
 
 Inline is a browser-based outlining program that I wrote many years ago.
 
-It worked surprisingly well at the time, considering how little I knew about programming at the time (see "Historical Context" below). Unfortunately it relies heavily on `contentEditable`, and it appears that subtle differences in behavior have crept into the world since 2011.
+It worked surprisingly well at the time, considering how little I knew about programming back then (see "Historical Context" below). Unfortunately it relies heavily on `contentEditable`, and it appears that subtle differences in behavior have crept into the world since 2011, leading to a lot of bugs around drag and drop that I'll probably never fix.
 
 I don't recommend that you use it. I rather like a lot of the design, such as the "bullet classes" and the way the gutter works, but I can't guarantee that it's stable enough to trust with any important data.
 
